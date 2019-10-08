@@ -1,0 +1,52 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+read_key                                                                          0x0275      12
+rx_buffer                                                                         0x0281       8
+rx_rd_index                                                                       0x0289       1
+rx_counter                                                                        0x028A       1
+tx_buffer                                                                         0x028B       8
+tx_wr_index                                                                       0x0293       1
+tx_rd_index                                                                       0x0294       1
+tx_counter                                                                        0x0295       1
+_base_y                                                                           0x0296       4
+_lcd_x                                                                            0x029A       1
+_lcd_y                                                                            0x029B       1
+_lcd_maxx                                                                         0x029C       1
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+this_module_is_Called                                                             R4,R5        2
+savedPassword                                                                     R6,R7        2
+str2                                                                              R8,R9        2
+sum                                                                               R10,R11      2
+index                                                                             R12,R13      2
+rx_buffer_overflow                                                                R2.0      1bit
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+ext_int1_isr                                                                      0x000B6      1
+starConversion                                                                    0x000B7     28
+read_keypad                                                                       0x000D3    227
+usart_rx_isr                                                                      0x001B6      1
+usart_tx_isr                                                                      0x001B7     36
+main                                                                              0x001DB     61
+put_buff_G100                                                                     0x00218     64
+_print_G100                                                                       0x00258    308
+sprintf                                                                           0x0038C     52
+strcat                                                                            0x003C0     17
+strlen                                                                            0x003D1     12
+strlenf                                                                           0x003DD     13
+_lcd_write_nibble_G102                                                            0x003EA     20
+_lcd_write_data                                                                   0x003FE     12
+lcd_gotoxy                                                                        0x0040A     17
+lcd_clear                                                                         0x0041B     14
+lcd_putchar                                                                       0x00429     32
+lcd_puts                                                                          0x00449     17
+lcd_init                                                                          0x0045A     47
