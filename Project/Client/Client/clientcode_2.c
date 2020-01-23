@@ -31,11 +31,12 @@ Data Stack size         : 512
 
 // Declare your global variables here
 int temperatureAmount = 0 ;
-char dataString[41] = "" ;
 char data ;
 char header[8] = "10101010" ; // 170
 char headerAmount = 170 ;
 char footerAmount = 225 ;
+char getTempInstruction = 32 ;
+char setPWMInstruction = 64 ;
 char footer[8] = "11111111" ; //255
 int packetNo = 0 ;
 char inputData = 0 ;
@@ -352,53 +353,63 @@ while (1)
       {
         inputData = getchar();
         if ( int(inputData) == 170 ){
-          //send temperature data
-          temperatureAmount = getTemp();
-          //Process :
-           int tempMode = temperatureAmount % 255 ;
-           int tempDiv = temperatureAmount / 255 ;
+          inputData = getchar();
+          if( int(inputData) ==  32 ){
+            //send temperature data
+            temperatureAmount = getTemp();
+            //Process :
+             int tempMode = temperatureAmount % 255 ;
+             int tempDiv = temperatureAmount / 255 ;
 
-           if ( tempMode == 0 && tempDiv != 0 ){
-             packetNo = 1 ;
-             putchar(headerAmount);
-             delay_ms(1);
-             putchar(char(packetNo));
-             delay_ms(1);
-             putchar(tempDiv);
-             delay_ms(1);
-             putchar(footerAmount);
-           }
-           else if ( tempMode != 0 && tempDiv == 0 ){
-             packetNo = 1 ;
-             putchar(headerAmount);
-             delay_ms(1);
-             putchar(char(packetNo));
-             delay_ms(1);
-             putchar(tempMode);
-             delay_ms(1);
-             putchar(footerAmount);
-           }
-           else if ( tempMode != 0 && tempDiv != 0  ){
-             packetNo = 2 ;
-             putchar(headerAmount);
-             delay_ms(1);
-             putchar(char(packetNo));
-             delay_ms(1);
-             putchar(tempDiv);
-             delay_ms(1);
-             putchar(tempMode);
-             delay_ms(1);
-             putchar(footerAmount);
-           }
+             if ( tempMode == 0 && tempDiv != 0 ){
+               packetNo = 1 ;
+               putchar(headerAmount);
+               delay_ms(1);
+               putchar(char(32));
+               delay_ms(1);
+               putchar(char(packetNo));
+               delay_ms(1);
+               putchar(tempDiv);
+               delay_ms(1);
+               putchar(footerAmount);
+             }
+             else if ( tempMode != 0 && tempDiv == 0 ){
+               packetNo = 1 ;
+               putchar(headerAmount);
+               delay_ms(1);
+               putchar(char(32));
+               delay_ms(1);
+               putchar(char(packetNo));
+               delay_ms(1);
+               putchar(tempMode);
+               delay_ms(1);
+               putchar(footerAmount);
+             }
+             else if ( tempMode != 0 && tempDiv != 0  ){
+               packetNo = 2 ;
+               putchar(headerAmount);
+               delay_ms(1);
+               putchar(char(32));
+               delay_ms(1);
+               putchar(char(packetNo));
+               delay_ms(1);
+               putchar(tempDiv);
+               delay_ms(1);
+               putchar(tempMode);
+               delay_ms(1);
+               putchar(footerAmount);
+             }
+          }
+          else if ( int(inputData) == 64 ){
+            // set motor pwm
+            getchar();
+            motorPWM = getchar();
+            OCR0 = (255*motorPWM)/100 ;
+            getchar();
+          }
+
         }
 
-        else if ( int(inputData) == 100 ){
-          // set motor pwm
-          getchar();
-          motorPWM = getchar();
-          OCR0 = (255*motorPWM)/100 ;
-          getchar();
-        }
       // Place your code here
       }
 }
