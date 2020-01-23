@@ -30,6 +30,7 @@ Data Stack size         : 512
 #include <alcd.h>
 
 // Declare your global variables here
+char printer[20] = "";
 int temperatureAmount = 0 ;
 char data ;
 char header[9] = "10101010" ; // 170
@@ -361,7 +362,9 @@ while (1)
           inputData = 32 ;
           if( (int)inputData ==  32 ){
             //send temperature data
-            temperatureAmount = getTemp();
+            temperatureAmount = getTemp(); 
+            sprintf(printer,"%d",temperatureAmount);
+            lcd_puts(printer);
             //Process :
              tempMode = temperatureAmount % 255 ;
              tempDiv = temperatureAmount / 255 ;
@@ -412,10 +415,8 @@ while (1)
             OCR0 = (255*motorPWM)/100 ;
             getchar();
           }
-        //test
-        //inputData  = 0 ;
         }\\ end of if (1)
       delay_ms(3000);
-      // Place your code here
+
     }\\end of while
 }

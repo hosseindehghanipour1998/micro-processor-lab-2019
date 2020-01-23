@@ -3,17 +3,15 @@ import serial
 
 def getData():
     connected = False
-    preamble = s.read()
-    print("Priamble : "  + str(preamble))
-    x = hex(int('10101010',2))
-    #preamble = str(int(preamble,16))
-    print(len(x), len(list(preamble)))
-    if str(preamble) == str.encode(x) :
+    header = s.read()
+    print("Header : "  + str(ord(header)))
+    header = ord(header)
+    if (header == 170):
         connected = True
-        print( connected )
+        print( "Connected ? -> " + connected )
     if ( connected ):
         inst = s.read()
-        print("Instruction: " + str(inst))
+        print("Instruction: " + str(ord(inst)))
         lengthtemp = s.read()
         length = ord(lengthtemp)
         length1 = length
@@ -25,7 +23,8 @@ def getData():
         print ("Data : " + str(data) )
         
         footer = s.read()
-        print("Footer : " + str(footer) )
+        x = ord(footer)
+        print("Footer : " + str(x) )
    
      
 def sendData(pwmSpeedPercentage , instructionCode):
