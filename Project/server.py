@@ -1,79 +1,101 @@
 import serial
-import threading as th
 import time
-
+import struct
 
 def getData():
+    
     data = -1
     connected = False
-    header = s.read()
-    print("Header : "  + str(ord(header)))
-    header = ord(header)
-    if (header == 170):
-        connected = True
-        print( "Connected ? -> " + connected )
-    if ( connected ):
-        inst = s.read()
-        print("Instruction: " + str(ord(inst)))
-        lengthtemp = s.read()
-        length = ord(lengthtemp)
-        length1 = length
-        while ( length1 > 0):
-            s2 = s.read()
-            data = ( data * 256) + ord(s2)
-            length1 = length1 - 1
-        print ("Data : " + str(data) )
-        
-        footer = s.read()
-        x = ord(footer)
-        print("Footer : " + str(x) )
+    try:
+        time.sleep(.5)
+        header = s.read()
+        print("Header : "  + str(ord(header)))
+        header = ord(header)
+        if (header == 170):
+            connected = True
+            print( "Connected ? -> " + str(connected) )
+        if ( connected ):
+            time.sleep(.5)
+            inst = s.read()
+            print("Instruction: " + str(ord(inst)))
+            time.sleep(.5)
+            lengthtemp = s.read()
+            length = ord(lengthtemp)
+            length1 = length
+            while ( length1 > 0):
+                time.sleep(.5)
+                s2 = s.read()
+                data = ( data * 256) + ord(s2)
+                length1 = length1 - 1
+            print ("Data : " + str(data) )
+            time.sleep(.5)
+            footer = s.read()
+            x = ord(footer)
+            print("Footer : " + str(x) )
+    except:
+        print("No Data received")
     return data
    
      
 def sendData(pwmSpeedPercentage , instructionCode):
+    datasent = ""
     
     #Send Header
-    s.write(chr(int('10101010',2)))
-    
+    ''' = str(int('10101010',2))'''
+    y = struct.pack("B",170)
+    s.write(y)
+    datasent += str(y) + "|"
+    time.sleep(.5)
     #Send Instruction Type
-    if ( instructionCode == 32 ):
-        s.write(chr(int('00100000',2)))
+    if ( instructionCode == 33 ):
+        y = struct.pack("B",33)
+        s.write(y)
+        datasent += str(y)+ "|"
+        time.sleep(.5)
     elif( instructionCode == 64 ):
-        s.write(chr(int('01000000',2)))
-    
+        y = struct.pack("B",64)
+        s.write(y)
+        datasent += str(y)+ "|"
+        time.sleep(.5)
     #Length Of 1
-    s.write(chr(1))
-    
+    y = struct.pack("B",1)
+    s.write(y)
+    datasent += str(y) + "|"
+    time.sleep(.5)
     #Send Data 
-    s.write(chr(int(pwmSpeedPercentage)))
-    
+    y = struct.pack("B",pwmSpeedPercentage)
+    s.write(y)
+    datasent += str(y) + "|"
+    time.sleep(.5)
     #Send Footer
-    s.write(chr(int('11111111',2)))     
-   
+    y = struct.pack("B",255)
+    s.write(y)    
+    datasent += str(y) + "|"
+    print("Sent Data : " + datasent )
+
+
 def proceed():
     while(True):
-        time.sleep(5)
-        sendData(60,32)
-        temperature = getData()
-        pwm = 0 
-        if ( temperature < 10 ):
-            pwm = 30
-        elif ( temperature >= 10 and temperature < 15 ):
-            pwm = 60
-        elif ( temperature >= 15 ):
-            pwm = 90
-        sendData(pwm , 64);
         
-    
-    
-# if this is run as a program (versus being imported),
-# create a root window and an instance of our example,
-# then start the event loop
-def printer():
-    
-    print("hi")
-    #th.Timer(5.0,printer).start()
+                
+            time.sleep(5)
+            sendData(60,32)
+            time.sleep(3)
+            temperature = getData()
+            pwm = 0 
+            if ( temperature < 10 ):
+                pwm = 30
+            elif ( temperature >= 10 and temperature < 15 ):
+                pwm = 60
+            elif ( temperature >= 15 ):
+                pwm = 90
+            sendData(pwm , 64);
+            print("============================")
+            
+        
+            print("no Data Received")
     
 if __name__ == "__main__":
     with serial.Serial ('COM2',9600,parity=serial.PARITY_NONE,bytesize=8,stopbits=2, timeout=10) as s:
         proceed()   
+        #sendData(0,33)

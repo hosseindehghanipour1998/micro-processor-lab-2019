@@ -30,9 +30,11 @@ Data Stack size         : 512
 #include <alcd.h>
 
 // Declare your global variables here
+int connected = 0 ;
 char printer[20] = "";
 int temperatureAmount = 0 ;
-char data ;
+
+int d ;
 char header[9] = "10101010" ; // 170
 char headerAmount = 170 ;
 char footerAmount = 225 ;
@@ -91,6 +93,17 @@ if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
       rx_buffer_overflow=1;
       }
 #endif
+   } 
+    d =(int) data ;
+   sprintf(printer,"%d",d);
+   lcd_puts(printer);  
+   delay_ms(1000);
+  
+   lcd_clear();
+   if ( (int)data == 170 ){
+         connected = 1 ;
+         lcd_puts("connected");
+   
    }
 }
 
@@ -355,16 +368,24 @@ lcd_init(16);
 
 while (1)
       {
-        //inputData = getchar();
-        inputData = 170 ;
-        if( (int)inputData == 170 ){
-          //inputData = getchar();
-          inputData = 32 ;
-          if( (int)inputData ==  32 ){
+       // inputData = getchar();   
+        //temperatureAmount = getTemp(); 
+        //sprintf(printer,"%d",temperatureAmount); 
+        //lcd_puts(printer);   
+        
+
+        if( connected ){
+          inputData = getchar();
+
+          if( (int)inputData ==  33 ){
             //send temperature data
             temperatureAmount = getTemp(); 
-            sprintf(printer,"%d",temperatureAmount);
+            
+            
+            sprintf(printer,"Temp : %d",temperatureAmount);
             lcd_puts(printer);
+            
+            
             //Process :
              tempMode = temperatureAmount % 255 ;
              tempDiv = temperatureAmount / 255 ;
@@ -372,39 +393,39 @@ while (1)
              if ( tempMode == 0 && tempDiv != 0 ){
                packetNo = 1 ;
                putchar(headerAmount);
-               delay_ms(1);
+               delay_ms(100);
                putchar((char)32);
-               delay_ms(1);
+               delay_ms(100);
                putchar((char)packetNo);
-               delay_ms(1);
+               delay_ms(100);
                putchar(tempDiv);
-               delay_ms(1);
+               delay_ms(100);
                putchar(footerAmount);
              }
              else if ( tempMode != 0 && tempDiv == 0 ){
                packetNo = 1 ;
                putchar(headerAmount);
-               delay_ms(1);
+               delay_ms(100);
                putchar((char)32);
-               delay_ms(1);
+               delay_ms(100);
                putchar((char) packetNo);
-               delay_ms(1);
+               delay_ms(100);
                putchar(tempMode);
-               delay_ms(1);
+               delay_ms(100);
                putchar(footerAmount);
              }
              else if ( tempMode != 0 && tempDiv != 0  ){
                packetNo = 2 ;
                putchar(headerAmount);
-               delay_ms(1);
+               delay_ms(100);
                putchar((char)32);
-               delay_ms(1);
+               delay_ms(100);
                putchar((char)packetNo);
-               delay_ms(1);
+               delay_ms(100);
                putchar(tempDiv);
-               delay_ms(1);
+               delay_ms(100);
                putchar(tempMode);
-               delay_ms(1);
+               delay_ms(100);
                putchar(footerAmount);
              }
           }
@@ -416,7 +437,7 @@ while (1)
             getchar();
           }
         }\\ end of if (1)
-      delay_ms(3000);
-
+        delay_ms(100);
+       lcd_clear();
     }\\end of while
 }
