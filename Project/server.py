@@ -4,9 +4,11 @@ import serial
 def getData():
     connected = False
     preamble = s.read()
-    print("Priamble : "  + str(preamble) )
-    x = chr(int('10101010',2))
-    if preamble == bytes(x, 'utf-8'):
+    print("Priamble : "  + str(preamble))
+    x = hex(int('10101010',2))
+    #preamble = str(int(preamble,16))
+    print(len(x), len(list(preamble)))
+    if str(preamble) == str.encode(x) :
         connected = True
         print( connected )
     if ( connected ):
