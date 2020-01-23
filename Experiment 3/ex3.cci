@@ -1,0 +1,13 @@
+VERSION:3 SOURCE_TIMESTAMP:4F566EC5
+NODE:I LEVEL:0 LINE:24 "E:\UniversityPrograms\CodeVision\inc\mega32.h"
+NODE:I LEVEL:0 LINE:25 "E:\UniversityPrograms\CodeVision\inc\stdio.h"
+NODE:I LEVEL:0 LINE:26 "E:\UniversityPrograms\CodeVision\inc\delay.h"
+NODE:I LEVEL:0 LINE:29 "E:\UniversityPrograms\CodeVision\inc\alcd.h"
+NODE:V LEVEL:0 LINE:32 "str -> RAM:????"
+NODE:V LEVEL:0 LINE:33 "adcData -> R4,R5"
+NODE:F LEVEL:0 LINE:35 "ext_int0_isr(void)"
+NODE:F LEVEL:0 LINE:42 "ext_int1_isr(void)"
+NODE:F LEVEL:0 LINE:49 "ext_int2_isr(void)"
+NODE:M LEVEL:0 LINE:56 "ADC_VREF_TYPE"
+NODE:F LEVEL:0 LINE:59 "adc_isr(void)"
+NODE:F LEVEL:0 LINE:70 "main(void)"

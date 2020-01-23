@@ -298,7 +298,7 @@ while (1)
       //delay_ms(1000);
       ///sprintf(str,"%s",x);
       lcd_puts( str );
-      delay_ms(3000);
+      //delay_ms(3000);
       lcd_clear();
       }
 }
