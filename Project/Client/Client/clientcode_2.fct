@@ -1,0 +1,3 @@
+main DSTACK_USAGE:0 DSTACK_LEVEL:0 FILE:"clientcode_2.c" LINE:217
+getTemp DSTACK_USAGE:4 DSTACK_LEVEL:4 FILE:"clientcode_2.c" LINE:209
+usart_rx_isr DSTACK_USAGE:6 DSTACK_LEVEL:10 FILE:"clientcode_2.c" LINE:74

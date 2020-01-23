@@ -1,0 +1,54 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+motorPWM                                                                          0x0260       2
+tempMode                                                                          0x0262       2
+tempDiv                                                                           0x0264       2
+rx_buffer                                                                         0x0266       8
+rx_wr_index                                                                       0x026E       1
+rx_rd_index                                                                       0x026F       1
+rx_counter                                                                        0x0270       1
+tx_buffer                                                                         0x0271       8
+tx_wr_index                                                                       0x0279       1
+tx_rd_index                                                                       0x027A       1
+tx_counter                                                                        0x027B       1
+adc_data                                                                          0x027C       3
+input_index                                                                       0x027F       1
+_base_y                                                                           0x0280       4
+_lcd_x                                                                            0x0284       1
+_lcd_y                                                                            0x0285       1
+_lcd_maxx                                                                         0x0286       1
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+temperatureAmount                                                                 R4,R5        2
+data                                                                              R7           1
+headerAmount                                                                      R6           1
+footerAmount                                                                      R9           1
+getTempInstruction                                                                R8           1
+setPWMInstruction                                                                 R11          1
+packetNo                                                                          R12,R13      2
+inputData                                                                         R10          1
+rx_buffer_overflow                                                                R2.0      1bit
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+usart_rx_isr                                                                      0x00079     44
+getchar                                                                           0x000A5     32
+usart_tx_isr                                                                      0x000C5     36
+putchar                                                                           0x000E9     41
+timer0_ovf_isr                                                                    0x00112      1
+timer0_comp_isr                                                                   0x00113      1
+adc_isr                                                                           0x00114     38
+getTemp                                                                           0x0013A     25
+main                                                                              0x00153    186
+_lcd_write_nibble_G102                                                            0x0020D     20
+_lcd_write_data                                                                   0x00221     12
+lcd_clear                                                                         0x0022D     14
+lcd_init                                                                          0x0023B     47
