@@ -94,17 +94,11 @@ if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
       }
 #endif
    } 
-    d =(int) data ;
+   d =(int) data ;
    sprintf(printer,"%d",d);
    lcd_puts(printer);  
-   delay_ms(1000);
-  
+   delay_ms(500);  
    lcd_clear();
-   if ( (int)data == 170 ){
-         connected = 1 ;
-         lcd_puts("connected");
-   
-   }
 }
 
 #ifndef _DEBUG_TERMINAL_IO_
@@ -222,9 +216,8 @@ ADCSRA|=(1<<ADSC);
 
 int getTemp(){
   int a = adc_data[0] ;
-  //int temp  = (a*1023)/1.5 ;  
-  
-  int temp  = a/2.054;
+  //int temp  = (a*1023)/682 ;  
+  int temp  = a/2.054 - 3;
   return temp ;
 }
 
@@ -385,12 +378,12 @@ while (1)
             //send temperature data
             temperatureAmount = getTemp();
             lcd_puts("Received"); 
-            delay_ms(1000);
+            delay_ms(500);
             
-            
+            lcd_clear();
             sprintf(printer,"Temp : %d",temperatureAmount);
             lcd_puts(printer);
-            
+             delay_ms(500);
             
             //Process :
              tempMode = temperatureAmount % 255 ;
@@ -441,12 +434,12 @@ while (1)
             
             getchar();
             delay_ms(500);
-            
             motorPWM = getchar();
-            d = (int) motorPWM ;
-            sprintf(printer,"MotorSpeed : %d",d);  
-            lcd_puts(printer);
-            OCR0 = (255*d)/100 ;
+            d = (int) motorPWM ; 
+            sprintf(printer,"Perc:%d" ,d );
+            lcd_puts(printer);         
+            OCR0 = (255*d)/100 ;  
+            delay_ms(500);
             getchar();
           }
         }\\ end of if (1)
