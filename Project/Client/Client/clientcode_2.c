@@ -37,7 +37,7 @@ int temperatureAmount = 0 ;
 int d ;
 char header[9] = "10101010" ; // 170
 char headerAmount = 170 ;
-char footerAmount = 225 ;
+char footerAmount = 255 ;
 char getTempInstruction = 32 ;
 char setPWMInstruction = 64 ;
 char footer[9] = "11111111" ; //255
@@ -222,7 +222,9 @@ ADCSRA|=(1<<ADSC);
 
 int getTemp(){
   int a = adc_data[0] ;
-  int temp  = a/2.054 ;
+  //int temp  = (a*1023)/1.5 ;  
+  
+  int temp  = a/2.054;
   return temp ;
 }
 
@@ -365,21 +367,25 @@ lcd_init(16);
 
 // Global enable interrupts
 #asm("sei")
-
+OCR0 = 0 ;
 while (1)
       {
-       // inputData = getchar();   
+        inputData = getchar();   
         //temperatureAmount = getTemp(); 
         //sprintf(printer,"%d",temperatureAmount); 
-        //lcd_puts(printer);   
-        
+        //lcd_puts(printer);  
+        connected = 1 ; 
+         d = (int) inputData  ;
 
-        if( connected ){
+        if( d == 170 ){
           inputData = getchar();
-
-          if( (int)inputData ==  33 ){
+           //inputData = 33 ;
+           d = (int) inputData  ;
+          if( d ==  33){
             //send temperature data
-            temperatureAmount = getTemp(); 
+            temperatureAmount = getTemp();
+            lcd_puts("Received"); 
+            delay_ms(1000);
             
             
             sprintf(printer,"Temp : %d",temperatureAmount);
@@ -394,7 +400,7 @@ while (1)
                packetNo = 1 ;
                putchar(headerAmount);
                delay_ms(100);
-               putchar((char)32);
+               putchar((char)33);
                delay_ms(100);
                putchar((char)packetNo);
                delay_ms(100);
@@ -406,7 +412,7 @@ while (1)
                packetNo = 1 ;
                putchar(headerAmount);
                delay_ms(100);
-               putchar((char)32);
+               putchar((char)33);
                delay_ms(100);
                putchar((char) packetNo);
                delay_ms(100);
@@ -418,7 +424,7 @@ while (1)
                packetNo = 2 ;
                putchar(headerAmount);
                delay_ms(100);
-               putchar((char)32);
+               putchar((char)33);
                delay_ms(100);
                putchar((char)packetNo);
                delay_ms(100);
@@ -429,11 +435,18 @@ while (1)
                putchar(footerAmount);
              }
           }
-          else if ( (int)inputData == 64 ){
+      
+          else if ( d == 64 ){
             // set motor pwm
+            
             getchar();
+            delay_ms(500);
+            
             motorPWM = getchar();
-            OCR0 = (255*motorPWM)/100 ;
+            d = (int) motorPWM ;
+            sprintf(printer,"MotorSpeed : %d",d);  
+            lcd_puts(printer);
+            OCR0 = (255*d)/100 ;
             getchar();
           }
         }\\ end of if (1)

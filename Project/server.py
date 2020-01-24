@@ -4,10 +4,10 @@ import struct
 
 def getData():
     
-    data = -1
+    data = 0
     connected = False
     try:
-        time.sleep(.5)
+        time.sleep(.1)
         header = s.read()
         print("Header : "  + str(ord(header)))
         header = ord(header)
@@ -15,24 +15,27 @@ def getData():
             connected = True
             print( "Connected ? -> " + str(connected) )
         if ( connected ):
-            time.sleep(.5)
+            time.sleep(.1)
             inst = s.read()
             print("Instruction: " + str(ord(inst)))
-            time.sleep(.5)
+            time.sleep(.1)
             lengthtemp = s.read()
             length = ord(lengthtemp)
+            print("Length: " + str(length))
             length1 = length
             while ( length1 > 0):
-                time.sleep(.5)
+                time.sleep(.1)
                 s2 = s.read()
                 data = ( data * 256) + ord(s2)
                 length1 = length1 - 1
             print ("Data : " + str(data) )
-            time.sleep(.5)
+            time.sleep(.1)
             footer = s.read()
             x = ord(footer)
             print("Footer : " + str(x) )
+    
     except:
+        
         print("No Data received")
     return data
    
@@ -64,6 +67,7 @@ def sendData(pwmSpeedPercentage , instructionCode):
     time.sleep(.5)
     #Send Data 
     y = struct.pack("B",pwmSpeedPercentage)
+    print("PWM Speed : " + str(pwmSpeedPercentage))
     s.write(y)
     datasent += str(y) + "|"
     time.sleep(.5)
@@ -78,22 +82,23 @@ def proceed():
     while(True):
         
                 
+            time.sleep(6)
+            sendData(60,33)
             time.sleep(5)
-            sendData(60,32)
-            time.sleep(3)
             temperature = getData()
+            print("Received Temp : " + str(temperature))
             pwm = 0 
             if ( temperature < 10 ):
-                pwm = 30
+                pwm = 10
             elif ( temperature >= 10 and temperature < 15 ):
                 pwm = 60
             elif ( temperature >= 15 ):
-                pwm = 90
+                pwm = 100
             sendData(pwm , 64);
             print("============================")
             
         
-            print("no Data Received")
+            print("no 5 Data Received")
     
 if __name__ == "__main__":
     with serial.Serial ('COM2',9600,parity=serial.PARITY_NONE,bytesize=8,stopbits=2, timeout=10) as s:
