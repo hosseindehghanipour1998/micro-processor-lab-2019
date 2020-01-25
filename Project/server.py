@@ -42,7 +42,7 @@ def getData():
      
 def sendData(pwmSpeedPercentage , instructionCode):
     datasent = ""
-    
+    print("Sending instruction : " + str(instructionCode))
     #Send Header
     ''' = str(int('10101010',2))'''
     y = struct.pack("B",170)
@@ -79,26 +79,23 @@ def sendData(pwmSpeedPercentage , instructionCode):
 
 
 def proceed():
+    pwm = 60
     while(True):
-        
-                
+    
+            time.sleep(4)
+            sendData(pwm,33)
             time.sleep(6)
-            sendData(60,33)
-            time.sleep(5)
             temperature = getData()
             print("Received Temp : " + str(temperature))
-            pwm = 0 
+             
             if ( temperature < 10 ):
                 pwm = 10
             elif ( temperature >= 10 and temperature < 15 ):
-                pwm = 60
+                pwm = 70
             elif ( temperature >= 15 ):
                 pwm = 100
             sendData(pwm , 64);
             print("============================")
-            
-        
-            print("no 5 Data Received")
     
 if __name__ == "__main__":
     with serial.Serial ('COM2',9600,parity=serial.PARITY_NONE,bytesize=8,stopbits=2, timeout=10) as s:

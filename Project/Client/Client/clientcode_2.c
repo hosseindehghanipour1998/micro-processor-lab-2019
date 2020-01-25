@@ -216,8 +216,8 @@ ADCSRA|=(1<<ADSC);
 
 int getTemp(){
   int a = adc_data[0] ;
-  //int temp  = (a*1023)/682 ;  
-  int temp  = a/2.054 - 3;
+  int temp  = (a*1023)/1500 ;  
+  //int temp  = a/2.054 - 3;
   return temp ;
 }
 
