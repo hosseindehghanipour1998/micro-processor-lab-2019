@@ -1,0 +1,3 @@
+- Implemented in C and Python 3
+- This project transfers packets of data between a python server and an Atmega32 Micro Processor.
+- This project was done under supervision of [Dr.Mohsen Raji](https://www.researchgate.net/profile/Mohsen_Raji)
